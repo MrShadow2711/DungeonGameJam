@@ -10,7 +10,7 @@ public class Weapon
     public float Range { get; private set; }
     public float ScopeAngle { get; private set; }
 
-    private float RangeMultiplicator;
+    private float RangeMultiplicator = 2;
 
     public Weapon(float damage, float attackSpeed, float attackRelease, float range, float scopeAngle)
     {
@@ -46,7 +46,7 @@ public class Weapon
 
         GameObject enemy = enemyCollider.gameObject;
 
-        Vector3 mousePos = Input.mousePosition;
+        Vector2 mousePos = MouseToWorldPos(Input.mousePosition);
         Vector2 enemyPos = enemy.transform.position;
         Vector2 playerPos = Player.Instance.transform.position;
 
@@ -55,13 +55,13 @@ public class Weapon
         return enemy;
     }
 
-    private bool EnemyInScopeAngle(Vector3 mousePos, Vector2 enemyPos, Vector2 playerPos)
+    private bool EnemyInScopeAngle(Vector2 mousePos, Vector2 enemyPos, Vector2 playerPos)
     {
         float angleMouse = CalcAngle(playerPos, mousePos);
         float angleEnemy = CalcAngle(playerPos, enemyPos);
 
         float angleMin = angleMouse - ScopeAngle / 2;
-        float angleMax = angleMouse - ScopeAngle / 2;
+        float angleMax = angleMouse + ScopeAngle / 2;
 
         if(angleMin <= 0)
         {
@@ -91,11 +91,16 @@ public class Weapon
         if (dx == 0 && dy > 0) return 90f;
         if (dx == 0) return 270f;
 
-        float angle = Mathf.Rad2Deg * Mathf.Atan( Mathf.Deg2Rad * (dy / dx) );
+        float angle = Mathf.Rad2Deg * Mathf.Atan(dy / dx);
 
         if (dx < 0) return angle + 180;
         if (dy < 0) return angle + 360;
         return angle;
 
+    }
+
+    private Vector2 MouseToWorldPos(Vector3 screenPosition)
+    {
+        return Camera.main.ScreenToWorldPoint(screenPosition);
     }
 }

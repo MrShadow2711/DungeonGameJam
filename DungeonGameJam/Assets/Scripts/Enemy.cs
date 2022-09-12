@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] public static int layerMask;
+    public static int layerMask;
 
     public float health { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Enemy.layerMask = 1 << LayerMask.NameToLayer("Enemy");
     }
 
     // Update is called once per frame
@@ -23,5 +23,6 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        Debug.Log("Got Damage");
     }
 }
