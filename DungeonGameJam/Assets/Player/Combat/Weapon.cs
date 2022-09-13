@@ -10,7 +10,7 @@ public class Weapon
     public float Range { get; private set; }
     public float ScopeAngle { get; private set; }
 
-    private float RangeMultiplicator = 2;
+    public float RangeMultiplicator { get; private set; } = 2;
 
     public Weapon(float damage, float attackSpeed, float attackRelease, float range, float scopeAngle)
     {
